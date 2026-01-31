@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Islandia 2026</title>
+
+  <!-- PWA / App -->
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+
+  <!-- iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Islandia 2026" />
+  <link rel="apple-touch-icon" href="./icons/icon-180.png" />
+
+  <!-- CDNs (funcionan, pero para offline 100% luego te los localizo) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono&display=swap');
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-tap-highlight-color: transparent; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .sticky-nav { position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
+    .day-btn { border: 1px solid #e2e8f0; min-width: 62px; transition: all 0.2s; background: white; }
+    .day-btn.active { background: #1e293b; color: white; border-color: #1e293b; transform: scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .aurora-card { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-radius: 1.5rem; border: 1px solid rgba(45, 212, 191, 0.2); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .glass-item { background: white; border: 1px solid #e2e8f0; transition: border 0.2s; }
+    .glass-item:hover { border-color: #3b82f6; }
+  </style>
+</head>
+
+<body class="pb-16">
+
+  <!-- Header Fijo -->
+  <header class="sticky-nav px-4 py-4">
+    <div class="max-w-2xl mx-auto space-y-4">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">ISLANDIA 2026</h1>
+          <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Itinerario Verificado</p>
+        </div>
+        <div class="bg-blue-600 px-3 py-1 rounded-full text-white">
+          <span class="text-[10px] font-black uppercase">App GPS</span>
+        </div>
+      </div>
+      <div class="flex overflow-x-auto gap-2 no-scrollbar pb-1" id="day-selector"></div>
+    </div>
+  </header>
+
+  <main class="max-w-2xl mx-auto px-4 py-6">
+    <div id="full-route-header" class="mb-6"></div>
+    <div id="main-view" class="space-y-6"></div>
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-2xl shadow-2xl opacity-0 transition-opacity z-50 pointer-events-none flex items-center gap-2">
+    <i class="fas fa-check-circle text-teal-400"></i>
+    <span class="text-sm font-bold uppercase tracking-wide">Coordenadas Copiadas</span>
+  </div>
+
+  <script>
+    const itineraryData = [
+      {
+        day: 1, date: "Dom 01 Feb", title: "Llegada y Reikiavik", hotel: "Center Hotels Plaza",
+        stops: [
+          { time: "06:15 AM", name: "Llegada Aeropuerto KEF", coords: "63.9850,-22.6056", icon: "fa-plane-arrival" },
+          { time: "07:00 AM", name: "Sixt Car Rental (KEF)", coords: "63.9923,-22.6258", icon: "fa-car" },
+          { time: "09:30 AM", name: "Hallgrímskirkja", coords: "64.1420,-21.9265", icon: "fa-church" },
+          { time: "11:30 AM", name: "Harpa & Sun Voyager", coords: "64.1504,-21.9325", icon: "fa-landmark" },
+          { time: "01:00 PM", name: "Café Babalú (Almuerzo)", coords: "64.1432,-21.9268", icon: "fa-mug-hot" },
+          { time: "03:00 PM", name: "Check-in Hotel Plaza", coords: "64.1481,-21.9423", icon: "fa-hotel" }
+        ],
+        aurora: { name: "Kleifarvatn Lake", coords: "63.9335,-22.0583", rating: "8.5/10", time: "09:30 PM" }
+      },
+      {
+        day: 2, date: "Lun 02 Feb", title: "Círculo Dorado", hotel: "Regreso a Reikiavik",
+        stops: [
+          { time: "09:30 AM", name: "Þingvellir (Parking P1)", coords: "64.2558,-21.1299", icon: "fa-mountain" },
+          { time: "11:30 AM", name: "Geysir (Área Térmica)", coords: "64.3104,-20.3012", icon: "fa-volcano" },
+          { time: "01:00 PM", name: "Gullfoss Waterfall", coords: "64.3251,-20.1246", icon: "fa-water" },
+          { time: "02:30 PM", name: "Friðheimar (Tomates)", coords: "64.1776,-20.4449", icon: "fa-utensils" },
+          { time: "04:30 PM", name: "Secret Lagoon", coords: "64.1373,-20.3094", icon: "fa-hot-tub" },
+          { time: "06:30 PM", name: "Cráter Kerið", coords: "63.9413,-20.8851", icon: "fa-circle-notch" }
+        ],
+        aurora: { name: "Þingvellir P5", coords: "64.255,-21.129", rating: "9.4/10", time: "10:00 PM" }
+      },
+      {
+        day: 3, date: "Mar 03 Feb", title: "Ruta Costa Sur", hotel: "Hvammból Vík",
+        stops: [
+          { time: "09:30 AM", name: "Seljalandsfoss (Parking)", coords: "63.6159,-19.9897", icon: "fa-water" },
+          { time: "10:30 AM", name: "Gljúfrabúi (Oculta)", coords: "63.6212,-19.9869", icon: "fa-leaf" },
+          { time: "12:00 PM", name: "Skógafoss", coords: "63.5297,-19.5132", icon: "fa-water" },
+          { time: "02:00 PM", name: "Sólheimajökull (Parking)", coords: "63.5304,-19.3704", icon: "fa-snowflake" },
+          { time: "04:30 PM", name: "Playa Reynisfjara", coords: "63.4043,-19.0448", icon: "fa-umbrella-beach" },
+          { time: "06:00 PM", name: "Hvammból Guesthouse", coords: "63.4347,-19.0125", icon: "fa-bed" }
+        ],
+        aurora: { name: "Dyrhólaey Upper", coords: "63.4029,-19.1214", rating: "9.0/10", time: "09:30 PM" }
+      },
+      {
+        day: 4, date: "Mié 04 Feb", title: "Glaciares del Este", hotel: "Arnanes Country Hotel",
+        stops: [
+          { time: "10:00 AM", name: "Jökulsárlón (Laguna)", coords: "64.0483,-16.1793", icon: "fa-cube" },
+          { time: "11:30 AM", name: "Diamond Beach", coords: "64.0443,-16.1777", icon: "fa-gem" },
+          { time: "01:30 PM", name: "Höfn (Pueblo Comida)", coords: "64.2539,-15.2082", icon: "fa-fish" },
+          { time: "04:00 PM", name: "Vestrahorn / Stokksnes", coords: "64.2444,-14.9757", icon: "fa-camera" },
+          { time: "06:00 PM", name: "Arnanes Hotel", coords: "64.2985,-15.2754", icon: "fa-hotel" }
+        ],
+        aurora: { name: "Stokksnes Dunas", coords: "64.2409,-14.9635", rating: "10/10", time: "10:00 PM" }
+      },
+      {
+        day: 5, date: "Jue 05 Feb", title: "Retorno a la Capital", hotel: "R13 Reikiavik",
+        stops: [
+          { time: "10:30 AM", name: "Cañón Fjaðrárgljúfur", coords: "63.7712,-18.1717", icon: "fa-mountain" },
+          { time: "01:00 PM", name: "Lava Centre", coords: "63.7533,-20.2197", icon: "fa-fire" },
+          { time: "04:30 PM", name: "R13 Townhouse", coords: "64.1388,-21.8884", icon: "fa-home" },
+          { time: "06:00 PM", name: "Sky Lagoon (Relax)", coords: "64.1136,-21.9100", icon: "fa-hot-tub" }
+        ],
+        aurora: { name: "Örengslí Pass", coords: "63.9347,-21.9992", rating: "8.7/10", time: "10:30 PM" }
+      },
+      {
+        day: 6, date: "Vie 06 Feb", title: "Oeste e Into Glacier", hotel: "Fossatún",
+        stops: [
+          { time: "11:00 AM", name: "Húsafell Meeting Point", coords: "64.6993,-20.8687", icon: "fa-compass" },
+          { time: "02:30 PM", name: "Hraunfossar & Barnafoss", coords: "64.7028,-20.9772", icon: "fa-water" },
+          { time: "04:30 PM", name: "Check-in Fossatún", coords: "64.5919,-21.5114", icon: "fa-bed" }
+        ],
+        aurora: { name: "Kirkjufellsfoss", coords: "64.9394,-23.3075", rating: "10/10", time: "09:30 PM" }
+      },
+      {
+        day: 7, date: "Sáb 07 Feb", title: "Loop Snæfellsnes", hotel: "Fossatún",
+        stops: [
+          { time: "09:30 AM", name: "Ytri-Tunga (Focas)", coords: "64.8033,-23.0811", icon: "fa-paw" },
+          { time: "11:00 AM", name: "Búðakirkja (Iglesia)", coords: "64.8217,-23.3845", icon: "fa-church" },
+          { time: "12:30 PM", name: "Arnarstapi (Parking)", coords: "64.7691,-23.6216", icon: "fa-shoe-prints" },
+          { time: "02:30 PM", name: "Playa Djúpalónssandur", coords: "64.7536,-23.5930", icon: "fa-umbrella-beach" },
+          { time: "04:30 PM", name: "Saxhóll Crater", coords: "64.8511,-23.9245", icon: "fa-mountain" }
+        ],
+        aurora: { name: "Kirkjufell (Repetir)", coords: "64.9394,-23.3075", rating: "10/10", time: "10:00 PM" }
+      },
+      {
+        day: 8, date: "Dom 08 Feb", title: "Blue Lagoon y Salida", hotel: "N/A",
+        stops: [
+          { time: "10:00 AM", name: "Blue Lagoon (Baño)", coords: "63.8804,-22.4495", icon: "fa-hot-tub" },
+          { time: "01:00 PM", name: "Almuerzo Grindavík", coords: "63.8431,-22.4334", icon: "fa-utensils" },
+          { time: "02:30 PM", name: "Devolución Auto Sixt", coords: "63.9923,-22.6258", icon: "fa-undo" },
+          { time: "03:15 PM", name: "Aeropuerto KEF (Check-in)", coords: "63.9850,-22.6056", icon: "fa-ticket-alt" },
+          { time: "05:15 PM", name: "Salida Vuelo Regreso", coords: "63.9850,-22.6056", icon: "fa-plane-departure" }
+        ],
+        aurora: null
+      }
+    ];
+
+    let currentDayIdx = 0;
+
+    async function copy(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const temp = document.createElement('textarea');
+          temp.value = text;
+          temp.style.position = 'fixed';
+          temp.style.left = '-9999px';
+          document.body.appendChild(temp);
+          temp.focus();
+          temp.select();
+          document.execCommand('copy');
+          document.body.removeChild(temp);
+        }
+
+        const toast = document.getElementById('toast');
+        toast.style.opacity = '1';
+        setTimeout(() => toast.style.opacity = '0', 2000);
+      } catch (e) {
+        alert("No se pudo copiar. Mantén presionado y copia manual.");
+      }
+    }
+
+    function getMaps(coords) {
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(coords)}`;
+    }
+
+    // Ruta completa (tu versión original funciona bien)
+    function getFullDir(stops) {
+      const pts = stops.map(s => s.coords).join('/');
+      return `https://www.google.com/maps/dir/${pts}`;
+    }
+
+    function setDay(i) {
+      currentDayIdx = i;
+      render();
+      window.scrollTo(0, 0);
+    }
+
+    function render() {
+      const data = itineraryData[currentDayIdx];
+
+      document.getElementById('day-selector').innerHTML = itineraryData.map((d, i) => `
+        <button onclick="setDay(${i})" class="day-btn flex-shrink-0 px-5 py-2 rounded-2xl text-sm font-bold ${currentDayIdx === i ? 'active' : 'text-slate-500'}">
+          <span class="block text-[9px] opacity-60 uppercase">Día</span>${d.day}
+        </button>
+      `).join('');
+
+      document.getElementById('full-route-header').innerHTML = `
+        <a href="${getFullDir(data.stops)}" target="_blank" class="block w-full bg-blue-600 text-white py-4 rounded-2xl text-center font-extrabold shadow-lg flex items-center justify-center gap-3">
+          <i class="fas fa-route"></i> RUTA COMPLETA GOOGLE MAPS
+        </a>
+      `;
+
+      let auroraCard = '';
+      if (data.aurora) {
+        auroraCard = `
+          <div class="aurora-card p-6 shadow-xl relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-32 h-32 bg-teal-500/10 blur-3xl rounded-full"></div>
+            <div class="flex justify-between items-center mb-4">
+              <div class="flex items-center gap-2">
+                <span class="bg-teal-500 text-white text-[10px] font-black px-2 py-0.5 rounded">${data.aurora.time}</span>
+                <span class="text-[10px] font-bold text-teal-400 tracking-widest uppercase">Misión Aurora</span>
+              </div>
+              <span class="text-[10px] font-black border border-teal-500/30 px-2 py-0.5 rounded-full text-teal-300">Rating: ${data.aurora.rating}</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-1">${data.aurora.name}</h3>
+            <p class="text-slate-400 mono text-xs mb-6">${data.aurora.coords}</p>
+            <div class="flex gap-2">
+              <button onclick="copy('${data.aurora.coords}')" class="flex-1 bg-white/10 py-3 rounded-xl font-bold text-xs uppercase tracking-tighter text-white">Copiar GPS</button>
+              <a href="${getMaps(data.aurora.coords)}" target="_blank" class="flex-1 bg-teal-600 py-3 rounded-xl font-bold text-xs uppercase tracking-tighter text-center text-white no-underline">Abrir Mapa</a>
+            </div>
+          </div>`;
+      }
+
+      const stopsHtml = data.stops.map(s => `
+        <div class="glass-item p-4 rounded-3xl flex items-center justify-between shadow-sm">
+          <div class="flex items-center gap-4">
+            <div class="text-center min-w-[55px] border-r border-slate-100 pr-2">
+              <span class="text-[9px] font-bold text-blue-600 uppercase block leading-none">${s.time.split(' ')[1]}</span>
+              <span class="text-xs font-black text-slate-800">${s.time.split(' ')[0]}</span>
+            </div>
+            <div class="w-10 h-10 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center text-lg">
+              <i class="fas ${s.icon}"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-800 text-sm leading-tight">${s.name}</h4>
+              <p class="text-[9px] text-slate-400 mono mt-0.5">${s.coords}</p>
+            </div>
+          </div>
+          <div class="flex gap-1.5">
+            <button onclick="copy('${s.coords}')" class="w-10 h-10 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:bg-slate-100">
+              <i class="fas fa-copy"></i>
+            </button>
+            <a href="${getMaps(s.coords)}" target="_blank" class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center hover:bg-blue-100">
+              <i class="fab fa-google"></i>
+            </a>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('main-view').innerHTML = `
+        <div class="px-1">
+          <div class="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-widest mb-1">
+            <i class="fas fa-calendar-alt"></i> ${data.date} 2026
+          </div>
+          <h2 class="text-3xl font-black text-slate-900 leading-none">${data.title}</h2>
+          <div class="mt-4 flex items-center gap-2 text-sm text-slate-500 font-medium">
+            <i class="fas fa-bed text-blue-400"></i> <span class="text-slate-800 font-semibold">${data.hotel}</span>
+          </div>
+        </div>
+        ${auroraCard}
+        <div class="space-y-3">
+          <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-2">Cronograma Diario</h3>
+          ${stopsHtml}
+        </div>
+      `;
+    }
+
+    window.onload = render;
+  </script>
+
+  <!-- Registrar Service Worker (PWA + Offline) -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(console.error);
+      });
+    }
+  </script>
+</body>
+</html>
