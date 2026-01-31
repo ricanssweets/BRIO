@@ -1,7 +1,6 @@
-const CACHE_NAME = "islandia-2026-v1";
+const CACHE_NAME = "islandia-2026-v2";
 
 const CORE_ASSETS = [
-  "./",
   "./index.html",
   "./manifest.webmanifest",
   "./sw.js",
@@ -43,7 +42,7 @@ self.addEventListener("fetch", (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
           return res;
         })
-        .catch(() => caches.match("./index.html"));
+        .catch(() => caches.match("./index.html"))
     })
   );
 });
