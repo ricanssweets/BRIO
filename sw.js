@@ -1,4 +1,4 @@
-const CACHE_NAME = "islandia-2026-v1";
+const CACHE_NAME = "islandia-2026-v2";
 
 const CORE_ASSETS = [
   "./",
