@@ -1,15 +1,15 @@
-const CACHE_NAME = "islandia-2026-v2";
+const CACHE_NAME = "islandia-2026-v1";
 
 const CORE_ASSETS = [
+  "./",
   "./index.html",
   "./manifest.webmanifest",
   "./sw.js",
-  "./icons/icon-180.png",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  "./icon-180.png",
+  "./icon-192.png",
+  "./icon-512.png"
 ];
 
-// Instalar: cachea lo esencial
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS))
@@ -17,7 +17,6 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
-// Activar: limpia cache vieja
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -27,7 +26,6 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Fetch: cache-first (sirve offline)
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
@@ -42,7 +40,7 @@ self.addEventListener("fetch", (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
           return res;
         })
-        .catch(() => caches.match("./index.html"))
+        .catch(() => caches.match("./index.html"));
     })
   );
 });
