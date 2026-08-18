@@ -52,24 +52,41 @@
     .mono { font-family: 'JetBrains Mono', monospace; }
     .app { max-width: 500px; margin: 0 auto; min-height: 100vh; position: relative; padding: 0 16px; }
 
-    /* ---- Top Bar ---- */
+    /* ---- Top Bar & Header Visual ---- */
     .topbar {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 4px 14px;
+      padding: 16px 4px 12px;
     }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .brand-logo-img {
-      width: 44px; height: 44px; border-radius: 12px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.35); flex-shrink: 0;
-      object-fit: cover;
+    .brand-full-container {
+      display: flex; align-items: center; gap: 10px;
     }
-    .brand-title { font-weight: 900; font-size: 20px; letter-spacing: 0.08em; color: #ffffff; line-height: 1.1; }
-    .brand-sub { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-top: 2px; }
+    .brand-full-img {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+    }
     
     .daybadge {
       font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 11.5px;
       background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.3);
       padding: 6px 12px; border-radius: 20px; color: var(--brio-green);
+    }
+
+    /* ---- Banner Hero para Pantallas Principales ---- */
+    .hero-banner-wrap {
+      text-align: center;
+      padding: 16px 0 10px;
+    }
+    .hero-banner-img {
+      width: 100%;
+      max-width: 280px;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      margin: 0 auto;
+      display: block;
     }
 
     .screen { display: none; animation: fadeIn .2s ease forwards; }
@@ -221,21 +238,20 @@
 </head>
 <body>
   <div class="app" id="app">
-    <!-- Header con tu logo original en imagen -->
+    <!-- Header con tu diseño completo -->
     <div class="topbar">
-      <div class="brand">
-        <img src="logo.png" alt="B.R.I.O. Logo" class="brand-logo-img">
-        <div>
-          <div class="brand-title">B.R.I.O.</div>
-          <div class="brand-sub">Base Racional de Ideas y Objetivos</div>
-        </div>
+      <div class="brand-full-container">
+        <img src="logo-full.png" alt="B.R.I.O." class="brand-full-img">
       </div>
       <div class="daybadge" id="topDayBadge" style="display:none;"></div>
     </div>
 
     <!-- CONTRATO -->
     <div class="screen" id="screen-contrato">
-      <div class="card">
+      <div class="hero-banner-wrap">
+        <img src="logo-full.png" alt="B.R.I.O. Emblema" class="hero-banner-img">
+      </div>
+      <div class="card" style="margin-top: 12px;">
         <h2 style="font-size: 19px; margin-bottom: 6px; font-weight: 800;">Contrato BRIO</h2>
         <p class="muted">Ciclo de 120 días. Define tu compromiso: enfoca, planifica, actúa y transforma.</p>
         <label>Nombre</label>
