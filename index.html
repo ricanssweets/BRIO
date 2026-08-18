@@ -52,7 +52,7 @@
     .mono { font-family: 'JetBrains Mono', monospace; }
     .app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; padding: 0 16px; }
 
-    /* ---- Top Bar Limpia ---- */
+    /* ---- Top Bar ---- */
     .topbar {
       display: flex; align-items: center; justify-content: space-between;
       padding: 16px 4px 12px;
@@ -61,7 +61,7 @@
       display: flex; align-items: center; gap: 10px;
     }
     .brand-mini-img {
-      width: 36px; height: 36px; border-radius: 10px;
+      width: 38px; height: 38px; border-radius: 10px;
       object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     .brand-mini-title {
@@ -77,16 +77,16 @@
       padding: 6px 12px; border-radius: 20px; color: var(--brio-green);
     }
 
-    /* ---- Banner Portada Elegante ---- */
+    /* ---- Logo Bienvenida ---- */
     .hero-banner-wrap {
       text-align: center;
-      padding: 8px 0 16px;
+      padding: 24px 0 14px;
     }
     .hero-banner-img {
-      width: 170px;
+      width: 140px;
       height: auto;
       border-radius: 22px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
       margin: 0 auto;
       display: block;
     }
@@ -217,7 +217,7 @@
     .navbtn svg { width: 22px; height: 22px; }
     .navbtn span { font-size: 11px; font-weight: 700; }
 
-    /* ---- Modales ---- */
+    /* ---- Modals ---- */
     .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; display: none; align-items: flex-end; justify-content: center; backdrop-filter: blur(4px); }
     .overlay.active { display: flex; }
     .modal {
@@ -240,8 +240,8 @@
 </head>
 <body>
   <div class="app" id="app">
-    <!-- Topbar limpia y fija -->
-    <div class="topbar">
+    <!-- Topbar (Se oculta durante el contrato y se activa en el panel) -->
+    <div class="topbar" id="mainTopBar" style="display:none;">
       <div class="brand-mini">
         <img src="logo.png" alt="BRIO" class="brand-mini-img">
         <div>
@@ -249,17 +249,17 @@
           <div class="brand-mini-sub">Ideas y Objetivos</div>
         </div>
       </div>
-      <div class="daybadge" id="topDayBadge" style="display:none;"></div>
+      <div class="daybadge" id="topDayBadge"></div>
     </div>
 
-    <!-- CONTRATO (Pantalla de Bienvenida) -->
+    <!-- CONTRATO (Solo aquí se muestra el logo grande) -->
     <div class="screen" id="screen-contrato">
       <div class="hero-banner-wrap">
-        <img src="logo-full.png" alt="B.R.I.O. Emblema" class="hero-banner-img">
+        <img src="logo-full.png" alt="B.R.I.O." class="hero-banner-img">
       </div>
       <div class="card">
         <h2 style="font-size: 19px; margin-bottom: 6px; font-weight: 800;">Contrato BRIO</h2>
-        <p class="muted">Ciclo de 120 días. Define tu compromiso personal: enfoca, planifica, actúa y transforma.</p>
+        <p class="muted">Ciclo de 120 días. Define tu compromiso: enfoca, planifica, actúa y transforma.</p>
         <label>Nombre</label>
         <input type="text" id="c_nombre" placeholder="Tu nombre">
         <label>Profesión</label>
@@ -544,8 +544,8 @@
         firmado: true
       };
       saveState();
+      document.getElementById('mainTopBar').style.display = 'flex';
       document.getElementById('navbar').style.display = 'flex';
-      document.getElementById('topDayBadge').style.display = 'block';
       showScreen('screen-metas');
       renderMetas();
     });
@@ -821,20 +821,22 @@
       if (!confirm('Esto borrará todos tus datos. ¿Continuar?')) return;
       state = emptyState();
       saveState();
+      document.getElementById('mainTopBar').style.display = 'none';
       document.getElementById('navbar').style.display = 'none';
-      document.getElementById('topDayBadge').style.display = 'none';
       renderContrato();
       showScreen('screen-contrato');
     });
 
     loadState();
     if (state.profile && state.profile.firmado) {
+      document.getElementById('mainTopBar').style.display = 'flex';
       document.getElementById('navbar').style.display = 'flex';
-      document.getElementById('topDayBadge').style.display = 'block';
       renderMetas();
       goDashboard();
       renderPerfil();
     } else {
+      document.getElementById('mainTopBar').style.display = 'none';
+      document.getElementById('navbar').style.display = 'none';
       renderContrato();
       showScreen('screen-contrato');
     }
