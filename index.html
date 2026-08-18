@@ -1,290 +1,836 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Islandia 2026</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>B.R.I.O. — Base Racional de Ideas y Objetivos</title>
 
-  <!-- PWA / App -->
-  <meta name="theme-color" content="#0f172a" />
-  <link rel="manifest" href="./manifest.webmanifest" />
+  <!-- PWA Meta Tags & Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1b18">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BRIO">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23ffffff'/%3E%3Cpath d='M 32 18 A 36 36 0 0 1 84 40' fill='none' stroke='%231b804d' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M 78 48 A 36 36 0 1 1 20 50 A 36 36 0 0 1 35 20' fill='none' stroke='%230f1c24' stroke-width='6' stroke-linecap='round'/%3E%3Ctext x='27' y='68' font-family='Arial Black, system-ui, sans-serif' font-size='48' font-weight='900' fill='%230f1c24'%3EB%3C/text%3E%3Cpath fill='%231b804d' d='M58 74 h6 v-16 h-6 z M67 74 h6 v-24 h-6 z M76 74 h6 v-33 h-6 z'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23ffffff'/%3E%3Cpath d='M 32 18 A 36 36 0 0 1 84 40' fill='none' stroke='%231b804d' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M 78 48 A 36 36 0 1 1 20 50 A 36 36 0 0 1 35 20' fill='none' stroke='%230f1c24' stroke-width='6' stroke-linecap='round'/%3E%3Ctext x='27' y='68' font-family='Arial Black, system-ui, sans-serif' font-size='48' font-weight='900' fill='%230f1c24'%3EB%3C/text%3E%3Cpath fill='%231b804d' d='M58 74 h6 v-16 h-6 z M67 74 h6 v-24 h-6 z M76 74 h6 v-33 h-6 z'/%3E%3C/svg%3E">
 
-  <!-- iOS -->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Islandia 2026" />
-  <link rel="apple-touch-icon" href="./icon-180.png" />
-
-  <!-- CDNs -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- Fuentes tipográficas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono&display=swap');
-    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-tap-highlight-color: transparent; }
+    :root {
+      --bg: #0d1512;
+      --bg-surface: #141f1b;
+      --bg-card: #192722;
+      --bg-card-hover: #1f302a;
+      --border: #23352f;
+      --border-focus: #28a745;
+      
+      --text-main: #f3f5f4;
+      --text-muted: #94a39d;
+      
+      --brand-green: #22c55e;
+      --brand-green-dark: #15803d;
+      --brand-green-glow: rgba(34, 197, 94, 0.18);
+      --brand-navy: #0f1c24;
+      
+      --amber: #f59e0b;
+      --danger: #ef4444;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      padding-bottom: 96px;
+      -webkit-font-smoothing: antialiased;
+    }
+
     .mono { font-family: 'JetBrains Mono', monospace; }
-    .sticky-nav { position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
-    .day-btn { border: 1px solid #e2e8f0; min-width: 62px; transition: all 0.2s; background: white; }
-    .day-btn.active { background: #1e293b; color: white; border-color: #1e293b; transform: scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    .aurora-card { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-radius: 1.5rem; border: 1px solid rgba(45, 212, 191, 0.2); }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .glass-item { background: white; border: 1px solid #e2e8f0; transition: border 0.2s; }
-    .glass-item:hover { border-color: #3b82f6; }
+    .app { max-width: 500px; margin: 0 auto; min-height: 100vh; position: relative; padding: 0 16px; }
+
+    /* ---- Header Bar ---- */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 4px 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-logo-wrap {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: #ffffff; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.35); flex-shrink: 0;
+    }
+    .brand-logo-wrap svg { width: 36px; height: 36px; }
+    .brand-title { font-weight: 800; font-size: 20px; letter-spacing: 0.04em; color: #ffffff; line-height: 1.1; }
+    .brand-sub { font-size: 9.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-top: 2px; }
+    
+    .daybadge {
+      font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px;
+      background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.3);
+      padding: 6px 12px; border-radius: 20px; color: var(--brand-green);
+    }
+
+    .screen { display: none; animation: fadeIn .2s ease forwards; }
+    .screen.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ---- Tarjetas y Contenedores ---- */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+    }
+    .muted { color: var(--text-muted); font-size: 13.5px; line-height: 1.5; }
+
+    /* ---- Formularios ---- */
+    label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; margin: 16px 0 6px; }
+    label:first-child { margin-top: 0; }
+    input[type=text], input[type=number], input[type=date], input[type=email], input[type=tel], select, textarea {
+      width: 100%; padding: 13px 14px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--bg-surface); font-family: inherit; font-size: 14.5px; color: #fff;
+      transition: border-color .15s ease;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--brand-green); }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* ---- Botones ---- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px 18px; border-radius: 13px; border: none; cursor: pointer;
+      font-family: inherit; font-weight: 700; font-size: 14.5px; width: 100%;
+      transition: all .12s ease;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: linear-gradient(135deg, #22c55e, #15803d); color: #ffffff; box-shadow: 0 4px 14px var(--brand-green-glow); }
+    .btn-secondary { background: var(--bg-surface); color: var(--text-main); border: 1px solid var(--border); }
+    .btn-danger { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .btn-ghost { background: transparent; color: var(--brand-green); border: 1px dashed var(--border); }
+    .btn-sm { padding: 8px 12px; font-size: 12.5px; width: auto; }
+
+    /* ---- Dashboard Hero ---- */
+    .hero {
+      background: linear-gradient(145deg, #13221b, #0d1713);
+      border: 1px solid var(--border);
+      border-radius: 22px; padding: 22px; margin-bottom: 18px; position: relative; overflow: hidden;
+    }
+    .hero:before {
+      content: ""; position: absolute; right: -40px; top: -40px; width: 180px; height: 180px;
+      border-radius: 50%; background: radial-gradient(circle, var(--brand-green-glow), transparent 70%);
+      pointer-events: none;
+    }
+    .hero-top { display: flex; justify-content: space-between; align-items: center; position: relative; }
+    .hero-days { font-weight: 800; font-size: 46px; line-height: 1; color: #fff; }
+    .hero-days-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); margin-top: 4px; font-weight: 600; }
+    .ring-wrap { position: relative; width: 76px; height: 76px; flex-shrink: 0; }
+    .ring-wrap svg { transform: rotate(-90deg); }
+    .ring-pct { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; color: #fff; }
+    .hero-meta { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); font-size: 12.5px; color: var(--text-muted); display: flex; justify-content: space-between; }
+
+    /* ---- Listas y Columnas ---- */
+    .section-title { display: flex; align-items: center; justify-content: space-between; margin: 22px 0 10px; }
+    .section-title h2 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+    .section-title .link { font-size: 12.5px; color: var(--brand-green); font-weight: 700; cursor: pointer; background: none; border: none; font-family: inherit; }
+
+    .pilar-tile {
+      width: 38px; height: 38px; border-radius: 10px; background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.25); display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--brand-green); font-weight: 800; font-size: 15px;
+    }
+    .pilar-tile.small { width: 32px; height: 32px; font-size: 13px; }
+
+    .pillar-row {
+      display: flex; align-items: center; gap: 14px; padding: 14px; background: var(--bg-card);
+      border: 1px solid var(--border); border-radius: 14px; margin-bottom: 9px; cursor: pointer;
+      transition: background .15s ease;
+    }
+    .pillar-row:hover { background: var(--bg-card-hover); }
+    .pillar-info { flex: 1; min-width: 0; }
+    .pillar-name { font-weight: 700; font-size: 14.5px; color: #fff; }
+    .pillar-count { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .pillar-pct { font-weight: 700; font-size: 13.5px; color: var(--brand-green); }
+    
+    .bar-track { height: 6px; background: var(--bg-surface); border-radius: 4px; overflow: hidden; margin-top: 6px; }
+    .bar-fill { height: 100%; background: linear-gradient(90deg, #15803d, #22c55e); border-radius: 4px; }
+
+    /* ---- Tarjetas de Objetivo ---- */
+    .goal-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 10px; }
+    .goal-top { display: flex; justify-content: space-between; gap: 10px; }
+    .goal-text { font-size: 14.5px; font-weight: 600; line-height: 1.4; color: #fff; }
+    .goal-freq { font-size: 11.5px; color: var(--text-muted); margin-top: 3px; }
+    .goal-progress-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+    .goal-count { font-size: 13px; color: var(--text-muted); white-space: nowrap; font-weight: 600; }
+    
+    .plusbtn, .minusbtn {
+      width: 36px; height: 36px; border-radius: 10px; border: none; font-size: 18px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform .08s ease;
+    }
+    .plusbtn { background: var(--brand-green); color: #0d1512; }
+    .minusbtn { background: var(--bg-surface); border: 1px solid var(--border); color: #fff; }
+    .plusbtn:active, .minusbtn:active { transform: scale(0.92); }
+
+    .pace-tag { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; padding: 3px 8px; border-radius: 6px; margin-top: 8px; display: inline-block; }
+    .pace-good { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+    .pace-behind { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .pace-done { background: var(--brand-green); color: #0d1512; }
+
+    /* ---- Chips / Sugerencias ---- */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .chip {
+      font-size: 12px; font-weight: 600; padding: 8px 12px; border-radius: 20px;
+      background: var(--bg-surface); border: 1px solid var(--border); cursor: pointer; color: var(--text-main);
+    }
+    .chip:hover { border-color: var(--brand-green); }
+
+    /* ---- Navbar Inferior PWA ---- */
+    .navbar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(13, 21, 18, 0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border); display: flex; z-index: 50; padding-bottom: env(safe-area-inset-bottom);
+    }
+    .navbar-inner { max-width: 500px; margin: 0 auto; display: flex; width: 100%; }
+    .navbtn {
+      flex: 1; background: none; border: none; padding: 12px 0 10px; display: flex; flex-direction: column;
+      align-items: center; gap: 4px; cursor: pointer; color: var(--text-muted); font-family: inherit;
+    }
+    .navbtn.active { color: var(--brand-green); }
+    .navbtn svg { width: 22px; height: 22px; }
+    .navbtn span { font-size: 11px; font-weight: 700; }
+
+    /* ---- Modales y Overlays ---- */
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; display: none; align-items: flex-end; justify-content: center; backdrop-filter: blur(4px); }
+    .overlay.active { display: flex; }
+    .modal {
+      background: var(--bg-surface); width: 100%; max-width: 500px; border-radius: 24px 24px 0 0;
+      border: 1px solid var(--border); border-bottom: none; padding: 22px 20px 30px; max-height: 88vh; overflow-y: auto;
+      animation: slideUp .2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .modal-head h3 { font-size: 18px; font-weight: 700; color: #fff; }
+    .close-x { background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; }
+
+    .back-btn { background: none; border: none; color: var(--text-muted); font-size: 13.5px; font-weight: 700; padding: 6px 0; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+    .empty { text-align: center; padding: 30px 10px; color: var(--text-muted); font-size: 13.5px; }
+    .warn { background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); color: #fbbf24; font-size: 12.5px; padding: 10px 14px; border-radius: 10px; margin-bottom: 12px; font-weight: 600; }
+    .checkline { display: flex; align-items: flex-start; gap: 10px; margin: 16px 0; }
+    .checkline input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--brand-green); }
+    .checkline p { font-size: 13px; line-height: 1.5; color: var(--text-muted); }
   </style>
 </head>
-
-<body class="pb-16">
-
-  <!-- Header Fijo -->
-  <header class="sticky-nav px-4 py-4">
-    <div class="max-w-2xl mx-auto space-y-4">
-      <div class="flex justify-between items-center">
-        <div>
-          <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">ISLANDIA 2026</h1>
-          <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Itinerario Verificado</p>
+<body>
+  <div class="app" id="app">
+    <!-- Topbar con logo adaptado -->
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-logo-wrap">
+          <svg viewBox="0 0 100 100">
+            <path d="M 32 18 A 36 36 0 0 1 84 40" fill="none" stroke="#1b804d" stroke-width="6.5" stroke-linecap="round"/>
+            <path d="M 78 48 A 36 36 0 1 1 20 50 A 36 36 0 0 1 35 20" fill="none" stroke="#0f1c24" stroke-width="6.5" stroke-linecap="round"/>
+            <text x="27" y="68" font-family="'Plus Jakarta Sans', Arial Black, sans-serif" font-size="48" font-weight="900" fill="#0f1c24">B</text>
+            <path fill="#1b804d" d="M58 74 h6 v-16 h-6 z M67 74 h6 v-24 h-6 z M76 74 h6 v-33 h-6 z"/>
+          </svg>
         </div>
-        <div class="bg-blue-600 px-3 py-1 rounded-full text-white">
-          <span class="text-[10px] font-black uppercase">App GPS</span>
+        <div>
+          <div class="brand-title">B.R.I.O.</div>
+          <div class="brand-sub">Base Racional de Ideas y Objetivos</div>
         </div>
       </div>
-      <div class="flex overflow-x-auto gap-2 no-scrollbar pb-1" id="day-selector"></div>
+      <div class="daybadge" id="topDayBadge" style="display:none;"></div>
     </div>
-  </header>
 
-  <main class="max-w-2xl mx-auto px-4 py-6">
-    <div id="full-route-header" class="mb-6"></div>
-    <div id="main-view" class="space-y-6"></div>
-  </main>
+    <!-- CONTRATO -->
+    <div class="screen" id="screen-contrato">
+      <div class="card">
+        <h2 style="font-size: 19px; margin-bottom: 6px;">Contrato BRIO</h2>
+        <p class="muted">Ciclo de 120 días. Define tu compromiso personal: enfoca, planifica y transforma tus hábitos.</p>
+        <label>Nombre</label>
+        <input type="text" id="c_nombre" placeholder="Tu nombre">
+        <label>Profesión</label>
+        <input type="text" id="c_profesion" placeholder="Ej. Emprendedor, barista, ingeniero...">
+        <div class="row2">
+          <div>
+            <label>Teléfono</label>
+            <input type="tel" id="c_telefono" placeholder="Opcional">
+          </div>
+          <div>
+            <label>Correo</label>
+            <input type="email" id="c_correo" placeholder="Opcional">
+          </div>
+        </div>
+        <label>Fecha de inicio</label>
+        <input type="date" id="c_inicio">
+        <p class="muted" id="c_finPreview" style="margin-top:8px;"></p>
+        <div class="checkline">
+          <input type="checkbox" id="c_firma">
+          <p>Acepto mi compromiso personal y este contrato por los próximos 120 días continuos.</p>
+        </div>
+        <button class="btn btn-primary" id="btnContinuar" style="margin-top:10px;">Comenzar mi ciclo →</button>
+      </div>
+    </div>
 
-  <!-- Toast -->
-  <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-2xl shadow-2xl opacity-0 transition-opacity z-50 pointer-events-none flex items-center gap-2">
-    <i class="fas fa-check-circle text-teal-400"></i>
-    <span class="text-sm font-bold uppercase tracking-wide">Coordenadas Copiadas</span>
+    <!-- SETUP / METAS -->
+    <div class="screen" id="screen-metas">
+      <button class="back-btn" onclick="goDashboard()">‹ Volver al panel</button>
+      <div class="section-title" style="margin-top:10px;">
+        <h2>Mis 7 columnas de vida</h2>
+      </div>
+      <p class="muted" style="margin-bottom:14px;">Elige entre 3 y 5 objetivos por columna con cantidad y frecuencia clara.</p>
+      <div id="pillarList"></div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="screen" id="screen-dashboard">
+      <div class="hero">
+        <div class="hero-top">
+          <div>
+            <div class="hero-days mono" id="heroDaysLeft">120</div>
+            <div class="hero-days-label">días restantes</div>
+          </div>
+          <div class="ring-wrap">
+            <svg width="76" height="76" viewBox="0 0 76 76">
+              <circle cx="38" cy="38" r="32" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="7"/>
+              <circle id="ringProgress" cx="38" cy="38" r="32" fill="none" stroke="#22c55e" stroke-width="7" stroke-linecap="round" stroke-dasharray="201" stroke-dashoffset="201"/>
+            </svg>
+            <div class="ring-pct mono" id="ringPct">0%</div>
+          </div>
+        </div>
+        <div class="hero-meta">
+          <span id="heroDateRange">–</span>
+          <span id="heroDayOf">Día 0 / 120</span>
+        </div>
+      </div>
+      <div class="section-title">
+        <h2>Tus Columnas</h2>
+        <button class="link" onclick="showScreen('screen-metas')">Configurar metas</button>
+      </div>
+      <div id="dashPillarList"></div>
+    </div>
+
+    <!-- DETALLE DE PILAR -->
+    <div class="screen" id="screen-pillar">
+      <button class="back-btn" onclick="goDashboard()">‹ Panel</button>
+      <div style="display:flex; align-items:center; gap:12px; margin: 10px 0 6px;">
+        <div class="pilar-tile" id="pd_tile">1</div>
+        <div>
+          <h2 id="pd_title" style="font-size: 20px;">Espiritual</h2>
+          <div class="muted" id="pd_desc" style="font-size: 12.5px;"></div>
+        </div>
+      </div>
+      <div id="pd_warn"></div>
+      <div id="pd_goalList" style="margin-top:14px;"></div>
+      <button class="btn btn-ghost" id="pd_addBtn" style="margin-top:8px;">+ Agregar objetivo</button>
+      <div id="pd_suggestBox" style="margin-top:22px;">
+        <label style="margin-top:0;">Sugerencias sugeridas</label>
+        <div class="chips" id="pd_chips"></div>
+      </div>
+    </div>
+
+    <!-- PERFIL -->
+    <div class="screen" id="screen-perfil">
+      <div class="section-title" style="margin-top:6px;"><h2>Perfil & Contrato</h2></div>
+      <div class="card">
+        <div class="muted">Nombre</div>
+        <div style="font-weight:700; margin-bottom:10px; font-size:15px;" id="pf_nombre">–</div>
+        <div class="muted">Profesión</div>
+        <div style="font-weight:700; margin-bottom:10px; font-size:15px;" id="pf_profesion">–</div>
+        <div class="muted">Ciclo activo</div>
+        <div style="font-weight:700; font-size:15px;" id="pf_ciclo">–</div>
+      </div>
+      <div class="section-title"><h2>Progreso General</h2></div>
+      <div class="card" id="pf_summary"></div>
+      <div class="section-title"><h2>Gestión de Ciclo</h2></div>
+      <button class="btn btn-secondary" id="btnNuevoCiclo">Iniciar un nuevo ciclo de 120 días</button>
+      <div class="section-title"><h2>Historial</h2></div>
+      <div id="pf_history"></div>
+      <div class="section-title"><h2>Zona Peligrosa</h2></div>
+      <button class="btn btn-danger" id="btnReset">Reiniciar todos los datos</button>
+    </div>
+
+    <!-- BARRA DE NAVEGACIÓN -->
+    <div class="navbar" id="navbar" style="display:none;">
+      <div class="navbar-inner">
+        <button class="navbtn" data-nav="screen-dashboard" onclick="goDashboard()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+          <span>Panel</span>
+        </button>
+        <button class="navbtn" data-nav="screen-metas" onclick="showScreen('screen-metas')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          <span>Columnas</span>
+        </button>
+        <button class="navbtn" data-nav="screen-perfil" onclick="showScreen('screen-perfil')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+          <span>Perfil</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MODAL META -->
+    <div class="overlay" id="goalOverlay">
+      <div class="modal">
+        <div class="modal-head">
+          <h3 id="goalModalTitle">Nuevo objetivo</h3>
+          <button class="close-x" onclick="closeGoalModal()">✕</button>
+        </div>
+        <label>Objetivo</label>
+        <textarea id="g_texto" rows="2" placeholder="Ej. Meditar 15 minutos"></textarea>
+        <div class="row2">
+          <div>
+            <label>Cantidad</label>
+            <input type="number" id="g_cantidad" min="1" value="1">
+          </div>
+          <div>
+            <label>Frecuencia</label>
+            <select id="g_frecuencia">
+              <option value="dia">por día</option>
+              <option value="semana">por semana</option>
+              <option value="mes">por mes</option>
+              <option value="ciclo">en el ciclo</option>
+            </select>
+          </div>
+        </div>
+        <p class="muted" id="g_targetPreview" style="margin-top:12px;"></p>
+        <button class="btn btn-primary" id="g_saveBtn" style="margin-top:16px;">Guardar objetivo</button>
+        <button class="btn btn-danger" id="g_deleteBtn" style="margin-top:10px; display:none;">Eliminar objetivo</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    const itineraryData = [
-      {
-        day: 1, date: "Dom 01 Feb", title: "Llegada y Reikiavik", hotel: "Center Hotels Plaza",
-        stops: [
-          { time: "06:15 AM", name: "Llegada Aeropuerto KEF", coords: "63.9850,-22.6056", icon: "fa-plane-arrival" },
-          { time: "07:00 AM", name: "Sixt Car Rental (KEF)", coords: "63.9923,-22.6258", icon: "fa-car" },
-          { time: "09:30 AM", name: "Hallgrímskirkja", coords: "64.1420,-21.9265", icon: "fa-church" },
-          { time: "11:30 AM", name: "Harpa & Sun Voyager", coords: "64.1504,-21.9325", icon: "fa-landmark" },
-          { time: "01:00 PM", name: "Café Babalú (Almuerzo)", coords: "64.1432,-21.9268", icon: "fa-mug-hot" },
-          { time: "03:00 PM", name: "Check-in Hotel Plaza", coords: "64.1481,-21.9423", icon: "fa-hotel" }
-        ],
-        aurora: { name: "Kleifarvatn Lake", coords: "63.9335,-22.0583", rating: "8.5/10", time: "09:30 PM" }
-      },
-      {
-        day: 2, date: "Lun 02 Feb", title: "Círculo Dorado", hotel: "Regreso a Reikiavik",
-        stops: [
-          { time: "09:30 AM", name: "Þingvellir (Parking P1)", coords: "64.2558,-21.1299", icon: "fa-mountain" },
-          { time: "11:30 AM", name: "Geysir (Área Térmica)", coords: "64.3104,-20.3012", icon: "fa-volcano" },
-          { time: "01:00 PM", name: "Gullfoss Waterfall", coords: "64.3251,-20.1246", icon: "fa-water" },
-          { time: "02:30 PM", name: "Friðheimar (Tomates)", coords: "64.1776,-20.4449", icon: "fa-utensils" },
-          { time: "04:30 PM", name: "Secret Lagoon", coords: "64.1373,-20.3094", icon: "fa-hot-tub" },
-          { time: "06:30 PM", name: "Cráter Kerið", coords: "63.9413,-20.8851", icon: "fa-circle-notch" }
-        ],
-        aurora: { name: "Þingvellir P5", coords: "64.255,-21.129", rating: "9.4/10", time: "10:00 PM" }
-      },
-      {
-        day: 3, date: "Mar 03 Feb", title: "Ruta Costa Sur", hotel: "Hvammból Vík",
-        stops: [
-          { time: "09:30 AM", name: "Seljalandsfoss (Parking)", coords: "63.6159,-19.9897", icon: "fa-water" },
-          { time: "10:30 AM", name: "Gljúfrabúi (Oculta)", coords: "63.6212,-19.9869", icon: "fa-leaf" },
-          { time: "12:00 PM", name: "Skógafoss", coords: "63.5297,-19.5132", icon: "fa-water" },
-          { time: "02:00 PM", name: "Sólheimajökull (Parking)", coords: "63.5304,-19.3704", icon: "fa-snowflake" },
-          { time: "04:30 PM", name: "Playa Reynisfjara", coords: "63.4043,-19.0448", icon: "fa-umbrella-beach" },
-          { time: "06:00 PM", name: "Hvammból Guesthouse", coords: "63.4347,-19.0125", icon: "fa-bed" }
-        ],
-        aurora: { name: "Dyrhólaey Upper", coords: "63.4029,-19.1214", rating: "9.0/10", time: "09:30 PM" }
-      },
-      {
-        day: 4, date: "Mié 04 Feb", title: "Glaciares del Este", hotel: "Arnanes Country Hotel",
-        stops: [
-          { time: "10:00 AM", name: "Jökulsárlón (Laguna)", coords: "64.0483,-16.1793", icon: "fa-cube" },
-          { time: "11:30 AM", name: "Diamond Beach", coords: "64.0443,-16.1777", icon: "fa-gem" },
-          { time: "01:30 PM", name: "Höfn (Pueblo Comida)", coords: "64.2539,-15.2082", icon: "fa-fish" },
-          { time: "04:00 PM", name: "Vestrahorn / Stokksnes", coords: "64.2444,-14.9757", icon: "fa-camera" },
-          { time: "06:00 PM", name: "Arnanes Hotel", coords: "64.2985,-15.2754", icon: "fa-hotel" }
-        ],
-        aurora: { name: "Stokksnes Dunas", coords: "64.2409,-14.9635", rating: "10/10", time: "10:00 PM" }
-      },
-      {
-        day: 5, date: "Jue 05 Feb", title: "Retorno a la Capital", hotel: "R13 Reikiavik",
-        stops: [
-          { time: "10:30 AM", name: "Cañón Fjaðrárgljúfur", coords: "63.7712,-18.1717", icon: "fa-mountain" },
-          { time: "01:00 PM", name: "Lava Centre", coords: "63.7533,-20.2197", icon: "fa-fire" },
-          { time: "04:30 PM", name: "R13 Townhouse", coords: "64.1388,-21.8884", icon: "fa-home" },
-          { time: "06:00 PM", name: "Sky Lagoon (Relax)", coords: "64.1136,-21.9100", icon: "fa-hot-tub" }
-        ],
-        aurora: { name: "Örengslí Pass", coords: "63.9347,-21.9992", rating: "8.7/10", time: "10:30 PM" }
-      },
-      {
-        day: 6, date: "Vie 06 Feb", title: "Oeste e Into Glacier", hotel: "Fossatún",
-        stops: [
-          { time: "11:00 AM", name: "Húsafell Meeting Point", coords: "64.6993,-20.8687", icon: "fa-compass" },
-          { time: "02:30 PM", name: "Hraunfossar & Barnafoss", coords: "64.7028,-20.9772", icon: "fa-water" },
-          { time: "04:30 PM", name: "Check-in Fossatún", coords: "64.5919,-21.5114", icon: "fa-bed" }
-        ],
-        aurora: { name: "Kirkjufellsfoss", coords: "64.9394,-23.3075", rating: "10/10", time: "09:30 PM" }
-      },
-      {
-        day: 7, date: "Sáb 07 Feb", title: "Loop Snæfellsnes", hotel: "Fossatún",
-        stops: [
-          { time: "09:30 AM", name: "Ytri-Tunga (Focas)", coords: "64.8033,-23.0811", icon: "fa-paw" },
-          { time: "11:00 AM", name: "Búðakirkja (Iglesia)", coords: "64.8217,-23.3845", icon: "fa-church" },
-          { time: "12:30 PM", name: "Arnarstapi (Parking)", coords: "64.7691,-23.6216", icon: "fa-shoe-prints" },
-          { time: "02:30 PM", name: "Playa Djúpalónssandur", coords: "64.7536,-23.5930", icon: "fa-umbrella-beach" },
-          { time: "04:30 PM", name: "Saxhóll Crater", coords: "64.8511,-23.9245", icon: "fa-mountain" }
-        ],
-        aurora: { name: "Kirkjufell (Repetir)", coords: "64.9394,-23.3075", rating: "10/10", time: "10:00 PM" }
-      },
-      {
-        day: 8, date: "Dom 08 Feb", title: "Blue Lagoon y Salida", hotel: "N/A",
-        stops: [
-          { time: "10:00 AM", name: "Blue Lagoon (Baño)", coords: "63.8804,-22.4495", icon: "fa-hot-tub" },
-          { time: "01:00 PM", name: "Almuerzo Grindavík", coords: "63.8431,-22.4334", icon: "fa-utensils" },
-          { time: "02:30 PM", name: "Devolución Auto Sixt", coords: "63.9923,-22.6258", icon: "fa-undo" },
-          { time: "03:15 PM", name: "Aeropuerto KEF (Check-in)", coords: "63.9850,-22.6056", icon: "fa-ticket-alt" },
-          { time: "05:15 PM", name: "Salida Vuelo Regreso", coords: "63.9850,-22.6056", icon: "fa-plane-departure" }
-        ],
-        aurora: null
-      }
+    /* PWA Service Worker Registration */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration skipped:', err));
+      });
+    }
+
+    const PILARES = [
+      { key:'espiritual', n:1, nombre:'Espiritual', desc:'Paz interior, conexión, gratitud y balance personal.', sugerencias:[
+        {t:'Meditar', c:10, f:'dia', suf:' min/día'}, {t:'Orar y agradecer', c:1, f:'dia', suf:' vez/día'}, {t:'Hacer yoga', c:3, f:'semana', suf:' veces/sem'}, {t:'Leer libros de sabiduría', c:2, f:'ciclo', suf:' libros'}
+      ]},
+      { key:'personal', n:2, nombre:'Personal', desc:'Salud mental, acondicionamiento físico y descanso.', sugerencias:[
+        {t:'Caminar 30 minutos', c:4, f:'semana', suf:' veces/sem'}, {t:'Dormir 7 a 8 horas', c:1, f:'dia', suf:' vez/día'}, {t:'Cero bebidas azucaradas', c:1, f:'ciclo', suf:' meta ciclo'}
+      ]},
+      { key:'familia', n:3, nombre:'Familia', desc:'Relaciones afectivas y tiempo de calidad con seres queridos.', sugerencias:[
+        {t:'Cena en pareja sin celular', c:1, f:'semana', suf:' vez/sem'}, {t:'Tiempo de juego con hijos', c:30, f:'dia', suf:' min/día'}, {t:'Llamar a los padres', c:1, f:'semana', suf:' vez/sem'}
+      ]},
+      { key:'profesional', n:4, nombre:'Profesional', desc:'Desarrollo de habilidades, disciplina laboral y proyectos.', sugerencias:[
+        {t:'Capacitación o curso', c:2, f:'mes', suf:' veces/mes'}, {t:'Llegar puntual / 15 min antes', c:1, f:'dia', suf:' vez/día'}, {t:'Promover negocio en redes', c:1, f:'dia', suf:' vez/día'}
+      ]},
+      { key:'financiera', n:5, nombre:'Financiera', desc:'Control de presupuesto, ahorro e inversiones.', sugerencias:[
+        {t:'Ahorro de ingresos mensual', c:1, f:'mes', suf:' vez/mes'}, {t:'Actualizar libro de cuentas', c:1, f:'semana', suf:' vez/sem'}, {t:'Reducir deuda de crédito', c:1, f:'ciclo', suf:' meta ciclo'}
+      ]},
+      { key:'comunidad', n:6, nombre:'Comunidad', desc:'Impacto social, voluntariado y apoyo al prójimo.', sugerencias:[
+        {t:'Apoyar labor social', c:1, f:'mes', suf:' vez/mes'}, {t:'Donación a organización', c:1, f:'mes', suf:' vez/mes'}
+      ]},
+      { key:'placer', n:7, nombre:'Placer', desc:'Hobbies, desconexión y tiempo de recarga personal.', sugerencias:[
+        {t:'Día completo al aire libre', c:2, f:'mes', suf:' veces/mes'}, {t:'Lectura de entretenimiento', c:2, f:'ciclo', suf:' libros'}, {t:'Sesión de masaje / spa', c:1, f:'ciclo', suf:' vez'}
+      ]}
     ];
 
-    let currentDayIdx = 0;
+    const CYCLE_DAYS = 120;
+    const STORAGE_KEY = 'brio_app_state_v1';
+    let state = null;
+    let currentPillarKey = null;
+    let editingGoalId = null;
 
-    async function copy(text) {
+    function emptyState() {
+      const goals = {};
+      PILARES.forEach(p => goals[p.key] = []);
+      return { profile: null, goals, logs: {}, history: [] };
+    }
+
+    function loadState() {
       try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(text);
-        } else {
-          const temp = document.createElement('textarea');
-          temp.value = text;
-          temp.style.position = 'fixed';
-          temp.style.left = '-9999px';
-          document.body.appendChild(temp);
-          temp.focus();
-          temp.select();
-          document.execCommand('copy');
-          document.body.removeChild(temp);
+        const raw = localStorage.getItem(STORAGE_KEY);
+        state = raw ? JSON.parse(raw) : emptyState();
+      } catch(e) {
+        state = emptyState();
+      }
+      if (!state.history) state.history = [];
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch(e) {
+        console.error('Error al guardar datos:', e);
+      }
+    }
+
+    function todayISO() { return new Date().toISOString().slice(0,10); }
+    function addDays(iso, days) { const d = new Date(iso+'T00:00:00'); d.setDate(d.getDate()+days); return d.toISOString().slice(0,10); }
+    function daysBetween(a,b) { const d1 = new Date(a+'T00:00:00'), d2 = new Date(b+'T00:00:00'); return Math.round((d2-d1)/86400000); }
+    function fmtDate(iso) { if(!iso) return '–'; const d = new Date(iso+'T00:00:00'); return d.toLocaleDateString('es', {day:'numeric', month:'short', year:'numeric'}); }
+
+    function elapsedDays() { if(!state.profile) return 0; return Math.max(0, Math.min(CYCLE_DAYS, daysBetween(state.profile.inicio, todayISO()))); }
+    function daysLeft() { return Math.max(0, CYCLE_DAYS - elapsedDays()); }
+
+    function goalTarget(g) {
+      const c = Number(g.cantidad)||1;
+      if (g.frecuencia === 'dia') return Math.round(c * CYCLE_DAYS);
+      if (g.frecuencia === 'semana') return Math.max(1, Math.round(c * (CYCLE_DAYS / 7)));
+      if (g.frecuencia === 'mes') return Math.max(1, Math.round(c * (CYCLE_DAYS / 30)));
+      return c;
+    }
+    function goalCount(id) { return state.logs[id] ? state.logs[id].count : 0; }
+    function goalExpectedByNow(g) { return goalTarget(g) * (elapsedDays() / CYCLE_DAYS); }
+    function allGoalsFlat() { let arr = []; PILARES.forEach(p => (state.goals[p.key]||[]).forEach(g => arr.push(g))); return arr; }
+
+    function overallProgress() {
+      const goals = allGoalsFlat();
+      if (!goals.length) return 0;
+      let sumPct = 0;
+      goals.forEach(g => { const t = goalTarget(g); sumPct += Math.min(1, t > 0 ? goalCount(g.id)/t : 0); });
+      return sumPct / goals.length;
+    }
+
+    function pillarProgress(key) {
+      const goals = state.goals[key] || [];
+      if (!goals.length) return 0;
+      let sum = 0;
+      goals.forEach(g => { const t = goalTarget(g); sum += Math.min(1, t > 0 ? goalCount(g.id)/t : 0); });
+      return sum / goals.length;
+    }
+
+    function freqLabel(f) { return {dia:'al día', semana:'a la semana', mes:'al mes', ciclo:'en el ciclo'}[f] || f; }
+    function uid() { return 'g_' + Math.random().toString(36).slice(2, 10); }
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.navbtn').forEach(b => b.classList.toggle('active', b.dataset.nav === id));
+      window.scrollTo(0,0);
+    }
+    function goDashboard() { renderDashboard(); showScreen('screen-dashboard'); }
+
+    function renderContrato() {
+      document.getElementById('c_inicio').value = todayISO();
+      updateFinPreview();
+    }
+    function updateFinPreview() {
+      const inicio = document.getElementById('c_inicio').value || todayISO();
+      document.getElementById('c_finPreview').textContent = `Tu ciclo concluirá el ${fmtDate(addDays(inicio, CYCLE_DAYS))}.`;
+    }
+    document.getElementById('c_inicio').addEventListener('change', updateFinPreview);
+
+    document.getElementById('btnContinuar').addEventListener('click', () => {
+      const nombre = document.getElementById('c_nombre').value.trim();
+      const firma = document.getElementById('c_firma').checked;
+      if (!nombre) return alert('Por favor escribe tu nombre.');
+      if (!firma) return alert('Debes marcar la casilla para confirmar tu compromiso.');
+      
+      state.profile = {
+        nombre,
+        profesion: document.getElementById('c_profesion').value.trim(),
+        telefono: document.getElementById('c_telefono').value.trim(),
+        correo: document.getElementById('c_correo').value.trim(),
+        inicio: document.getElementById('c_inicio').value || todayISO(),
+        firmado: true
+      };
+      saveState();
+      document.getElementById('navbar').style.display = 'flex';
+      document.getElementById('topDayBadge').style.display = 'block';
+      showScreen('screen-metas');
+      renderMetas();
+    });
+
+    function renderMetas() {
+      const wrap = document.getElementById('pillarList');
+      wrap.innerHTML = '';
+      PILARES.forEach(p => {
+        const goals = state.goals[p.key] || [];
+        const pct = Math.round(pillarProgress(p.key) * 100);
+        const row = document.createElement('div');
+        row.className = 'pillar-row';
+        row.onclick = () => openPillar(p.key);
+        row.innerHTML = `
+          <div class="pilar-tile small">${p.n}</div>
+          <div class="pillar-info">
+            <div class="pillar-name">${p.nombre}</div>
+            <div class="pillar-count">${goals.length} objetivo${goals.length===1?'':'s'} ${goals.length<3?'· falta completar mínimo 3':''}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+          </div>
+          <div class="pillar-pct mono">${pct}%</div>
+        `;
+        wrap.appendChild(row);
+      });
+    }
+
+    function renderDashboard() {
+      if (!state.profile) return;
+      const left = daysLeft();
+      const elapsed = elapsedDays();
+      document.getElementById('heroDaysLeft').textContent = left;
+      document.getElementById('heroDayOf').textContent = `Día ${elapsed} de ${CYCLE_DAYS}`;
+      document.getElementById('heroDateRange').textContent = `${fmtDate(state.profile.inicio)} → ${fmtDate(addDays(state.profile.inicio, CYCLE_DAYS))}`;
+      document.getElementById('topDayBadge').textContent = `DÍA ${elapsed}/${CYCLE_DAYS}`;
+
+      const pct = overallProgress();
+      const circumference = 2 * Math.PI * 32;
+      const ring = document.getElementById('ringProgress');
+      ring.setAttribute('stroke-dasharray', circumference);
+      ring.setAttribute('stroke-dashoffset', circumference * (1 - pct));
+      document.getElementById('ringPct').textContent = Math.round(pct * 100) + '%';
+
+      const wrap = document.getElementById('dashPillarList');
+      wrap.innerHTML = '';
+      PILARES.forEach(p => {
+        const goals = state.goals[p.key] || [];
+        const pp = Math.round(pillarProgress(p.key) * 100);
+        const row = document.createElement('div');
+        row.className = 'pillar-row';
+        row.onclick = () => openPillar(p.key);
+        row.innerHTML = `
+          <div class="pilar-tile small">${p.n}</div>
+          <div class="pillar-info">
+            <div class="pillar-name">${p.nombre}</div>
+            <div class="pillar-count">${goals.length ? goals.length + ' metas activas' : 'Sin objetivos aún'}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${pp}%"></div></div>
+          </div>
+          <div class="pillar-pct mono">${pp}%</div>
+        `;
+        wrap.appendChild(row);
+      });
+    }
+
+    function openPillar(key) {
+      currentPillarKey = key;
+      const p = PILARES.find(x => x.key === key);
+      document.getElementById('pd_tile').textContent = p.n;
+      document.getElementById('pd_title').textContent = p.nombre;
+      document.getElementById('pd_desc').textContent = p.desc;
+      renderPillarGoals();
+      renderPillarChips();
+      document.getElementById('pd_addBtn').onclick = () => openGoalModal(null);
+      showScreen('screen-pillar');
+    }
+
+    function renderPillarGoals() {
+      const goals = state.goals[currentPillarKey] || [];
+      const warnEl = document.getElementById('pd_warn');
+      warnEl.innerHTML = '';
+      if (goals.length < 3) warnEl.innerHTML = `<div class="warn">Agrega mínimo 3 objetivos en esta columna (máximo 5).</div>`;
+      document.getElementById('pd_addBtn').style.display = goals.length >= 5 ? 'none' : '';
+
+      const listEl = document.getElementById('pd_goalList');
+      if (!goals.length) {
+        listEl.innerHTML = `<div class="empty">No tienes objetivos asignados.<br>Agrega uno nuevo o toca una sugerencia rápida.</div>`;
+        return;
+      }
+      listEl.innerHTML = '';
+      goals.forEach(g => {
+        const target = goalTarget(g);
+        const count = goalCount(g.id);
+        const pct = target > 0 ? Math.min(100, Math.round(count / target * 100)) : 0;
+        const expected = goalExpectedByNow(g);
+        
+        let pace = '';
+        if (count >= target) pace = `<span class="pace-tag pace-done">Meta alcanzada</span>`;
+        else if (elapsedDays() > 2) {
+          pace = count >= expected ? `<span class="pace-tag pace-good">Al día</span>` : `<span class="pace-tag pace-behind">Atrasado</span>`;
         }
 
-        const toast = document.getElementById('toast');
-        toast.style.opacity = '1';
-        setTimeout(() => toast.style.opacity = '0', 2000);
-      } catch (e) {
-        alert("No se pudo copiar. Mantén presionado y copia manual.");
-      }
-    }
-
-    function getMaps(coords) {
-      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(coords)}`;
-    }
-
-    function getFullDir(stops) {
-      const pts = stops.map(s => s.coords).join('/');
-      return `https://www.google.com/maps/dir/${pts}`;
-    }
-
-    function setDay(i) {
-      currentDayIdx = i;
-      render();
-      window.scrollTo(0, 0);
-    }
-
-    function render() {
-      const data = itineraryData[currentDayIdx];
-
-      document.getElementById('day-selector').innerHTML = itineraryData.map((d, i) => `
-        <button onclick="setDay(${i})" class="day-btn flex-shrink-0 px-5 py-2 rounded-2xl text-sm font-bold ${currentDayIdx === i ? 'active' : 'text-slate-500'}">
-          <span class="block text-[9px] opacity-60 uppercase">Día</span>${d.day}
-        </button>
-      `).join('');
-
-      document.getElementById('full-route-header').innerHTML = `
-        <a href="${getFullDir(data.stops)}" target="_blank" class="block w-full bg-blue-600 text-white py-4 rounded-2xl text-center font-extrabold shadow-lg flex items-center justify-center gap-3">
-          <i class="fas fa-route"></i> RUTA COMPLETA GOOGLE MAPS
-        </a>
-      `;
-
-      let auroraCard = '';
-      if (data.aurora) {
-        auroraCard = `
-          <div class="aurora-card p-6 shadow-xl relative overflow-hidden">
-            <div class="absolute -right-10 -top-10 w-32 h-32 bg-teal-500/10 blur-3xl rounded-full"></div>
-            <div class="flex justify-between items-center mb-4">
-              <div class="flex items-center gap-2">
-                <span class="bg-teal-500 text-white text-[10px] font-black px-2 py-0.5 rounded">${data.aurora.time}</span>
-                <span class="text-[10px] font-bold text-teal-400 tracking-widest uppercase">Misión Aurora</span>
-              </div>
-              <span class="text-[10px] font-black border border-teal-500/30 px-2 py-0.5 rounded-full text-teal-300">Rating: ${data.aurora.rating}</span>
-            </div>
-            <h3 class="text-2xl font-bold mb-1">${data.aurora.name}</h3>
-            <p class="text-slate-400 mono text-xs mb-6">${data.aurora.coords}</p>
-            <div class="flex gap-2">
-              <button onclick="copy('${data.aurora.coords}')" class="flex-1 bg-white/10 py-3 rounded-xl font-bold text-xs uppercase tracking-tighter text-white">Copiar GPS</button>
-              <a href="${getMaps(data.aurora.coords)}" target="_blank" class="flex-1 bg-teal-600 py-3 rounded-xl font-bold text-xs uppercase tracking-tighter text-center text-white no-underline">Abrir Mapa</a>
-            </div>
-          </div>`;
-      }
-
-      const stopsHtml = data.stops.map(s => `
-        <div class="glass-item p-4 rounded-3xl flex items-center justify-between shadow-sm">
-          <div class="flex items-center gap-4">
-            <div class="text-center min-w-[55px] border-r border-slate-100 pr-2">
-              <span class="text-[9px] font-bold text-blue-600 uppercase block leading-none">${s.time.split(' ')[1]}</span>
-              <span class="text-xs font-black text-slate-800">${s.time.split(' ')[0]}</span>
-            </div>
-            <div class="w-10 h-10 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center text-lg">
-              <i class="fas ${s.icon}"></i>
-            </div>
+        const card = document.createElement('div');
+        card.className = 'goal-card';
+        card.innerHTML = `
+          <div class="goal-top">
             <div>
-              <h4 class="font-bold text-slate-800 text-sm leading-tight">${s.name}</h4>
-              <p class="text-[9px] text-slate-400 mono mt-0.5">${s.coords}</p>
+              <div class="goal-text">${g.texto}</div>
+              <div class="goal-freq">${g.cantidad} ${freqLabel(g.frecuencia)} · Meta total: ${target}</div>
             </div>
           </div>
-          <div class="flex gap-1.5">
-            <button onclick="copy('${s.coords}')" class="w-10 h-10 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:bg-slate-100">
-              <i class="fas fa-copy"></i>
-            </button>
-            <a href="${getMaps(s.coords)}" target="_blank" class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center hover:bg-blue-100">
-              <i class="fab fa-google"></i>
-            </a>
+          <div class="goal-progress-row">
+            <button class="minusbtn" data-act="minus" data-id="${g.id}">−</button>
+            <div style="flex:1;">
+              <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+            </div>
+            <div class="goal-count mono">${count}/${target}</div>
+            <button class="plusbtn" data-act="plus" data-id="${g.id}">+</button>
           </div>
-        </div>
-      `).join('');
+          ${pace}
+          <div style="margin-top:10px;">
+            <button class="btn btn-secondary btn-sm" data-act="edit" data-id="${g.id}">Editar</button>
+          </div>
+        `;
+        listEl.appendChild(card);
+      });
 
-      document.getElementById('main-view').innerHTML = `
-        <div class="px-1">
-          <div class="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-widest mb-1">
-            <i class="fas fa-calendar-alt"></i> ${data.date} 2026
-          </div>
-          <h2 class="text-3xl font-black text-slate-900 leading-none">${data.title}</h2>
-          <div class="mt-4 flex items-center gap-2 text-sm text-slate-500 font-medium">
-            <i class="fas fa-bed text-blue-400"></i> <span class="text-slate-800 font-semibold">${data.hotel}</span>
-          </div>
+      listEl.querySelectorAll('[data-act]').forEach(btn => {
+        btn.onclick = () => {
+          const act = btn.dataset.act, id = btn.dataset.id;
+          if (act === 'plus') logGoal(id, 1);
+          if (act === 'minus') logGoal(id, -1);
+          if (act === 'edit') openGoalModal(id);
+        };
+      });
+    }
+
+    function logGoal(id, delta) {
+      if (!state.logs[id]) state.logs[id] = { count: 0 };
+      state.logs[id].count = Math.max(0, state.logs[id].count + delta);
+      saveState();
+      renderPillarGoals();
+      renderMetas();
+    }
+
+    function renderPillarChips() {
+      const p = PILARES.find(x => x.key === currentPillarKey);
+      const box = document.getElementById('pd_chips');
+      const goals = state.goals[currentPillarKey] || [];
+      box.innerHTML = '';
+      if (goals.length >= 5) {
+        document.getElementById('pd_suggestBox').style.display = 'none';
+        return;
+      }
+      document.getElementById('pd_suggestBox').style.display = 'block';
+      p.sugerencias.forEach(s => {
+        const chip = document.createElement('button');
+        chip.className = 'chip';
+        chip.textContent = `${s.t} (${s.c} ${s.suf})`;
+        chip.onclick = () => {
+          const arr = state.goals[currentPillarKey];
+          if (arr.length >= 5) return;
+          arr.push({ id: uid(), texto: s.t, cantidad: s.c, frecuencia: s.f });
+          saveState();
+          renderPillarGoals();
+          renderPillarChips();
+          renderMetas();
+        };
+        box.appendChild(chip);
+      });
+    }
+
+    function openGoalModal(goalId) {
+      editingGoalId = goalId;
+      const overlay = document.getElementById('goalOverlay');
+      const delBtn = document.getElementById('g_deleteBtn');
+      if (goalId) {
+        const g = (state.goals[currentPillarKey] || []).find(x => x.id === goalId);
+        document.getElementById('goalModalTitle').textContent = 'Editar objetivo';
+        document.getElementById('g_texto').value = g.texto;
+        document.getElementById('g_cantidad').value = g.cantidad;
+        document.getElementById('g_frecuencia').value = g.frecuencia;
+        delBtn.style.display = 'block';
+      } else {
+        document.getElementById('goalModalTitle').textContent = 'Nuevo objetivo';
+        document.getElementById('g_texto').value = '';
+        document.getElementById('g_cantidad').value = 1;
+        document.getElementById('g_frecuencia').value = 'dia';
+        delBtn.style.display = 'none';
+      }
+      updateTargetPreview();
+      overlay.classList.add('active');
+    }
+
+    function closeGoalModal() {
+      document.getElementById('goalOverlay').classList.remove('active');
+      editingGoalId = null;
+    }
+
+    function updateTargetPreview() {
+      const c = Number(document.getElementById('g_cantidad').value) || 1;
+      const f = document.getElementById('g_frecuencia').value;
+      const t = goalTarget({ cantidad: c, frecuencia: f });
+      document.getElementById('g_targetPreview').textContent = `Total en 120 días: ${t} repeticiones.`;
+    }
+    document.getElementById('g_cantidad').addEventListener('input', updateTargetPreview);
+    document.getElementById('g_frecuencia').addEventListener('change', updateTargetPreview);
+
+    document.getElementById('g_saveBtn').addEventListener('click', () => {
+      const texto = document.getElementById('g_texto').value.trim();
+      if (!texto) return alert('Por favor describe el objetivo.');
+      const cantidad = Math.max(1, Number(document.getElementById('g_cantidad').value) || 1);
+      const frecuencia = document.getElementById('g_frecuencia').value;
+      const arr = state.goals[currentPillarKey];
+
+      if (editingGoalId) {
+        const g = arr.find(x => x.id === editingGoalId);
+        g.texto = texto; g.cantidad = cantidad; g.frecuencia = frecuencia;
+      } else {
+        if (arr.length >= 5) return alert('Máximo 5 metas por columna.');
+        arr.push({ id: uid(), texto, cantidad, frecuencia });
+      }
+      saveState();
+      closeGoalModal();
+      renderPillarGoals();
+      renderPillarChips();
+      renderMetas();
+    });
+
+    document.getElementById('g_deleteBtn').addEventListener('click', () => {
+      if (!confirm('¿Seguro que deseas eliminar este objetivo?')) return;
+      const arr = state.goals[currentPillarKey];
+      const idx = arr.findIndex(x => x.id === editingGoalId);
+      if (idx > -1) {
+        delete state.logs[arr[idx].id];
+        arr.splice(idx, 1);
+      }
+      saveState();
+      closeGoalModal();
+      renderPillarGoals();
+      renderPillarChips();
+      renderMetas();
+    });
+
+    function renderPerfil() {
+      if (!state.profile) return;
+      document.getElementById('pf_nombre').textContent = state.profile.nombre;
+      document.getElementById('pf_profesion').textContent = state.profile.profesion || 'No especificado';
+      document.getElementById('pf_ciclo').textContent = `${fmtDate(state.profile.inicio)} → ${fmtDate(addDays(state.profile.inicio, CYCLE_DAYS))}`;
+      
+      const goals = allGoalsFlat();
+      const totalTarget = goals.reduce((s,g) => s + goalTarget(g), 0);
+      const totalDone = goals.reduce((s,g) => s + Math.min(goalTarget(g), goalCount(g.id)), 0);
+
+      document.getElementById('pf_summary').innerHTML = `
+        <div class="row2">
+          <div><div class="muted">Metas fijadas</div><div style="font-weight:800; font-size:20px;" class="mono">${goals.length}</div></div>
+          <div><div class="muted">Progreso global</div><div style="font-weight:800; font-size:20px;" class="mono">${Math.round(overallProgress()*100)}%</div></div>
         </div>
-        ${auroraCard}
-        <div class="space-y-3">
-          <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-2">Cronograma Diario</h3>
-          ${stopsHtml}
-        </div>
+        <div class="bar-track" style="margin-top:12px;"><div class="bar-fill" style="width:${totalTarget ? Math.round(totalDone/totalTarget*100) : 0}%"></div></div>
       `;
     }
 
-    window.onload = render;
-  </script>
+    document.getElementById('btnNuevoCiclo').addEventListener('click', () => {
+      if (!confirm('¿Deseas iniciar un nuevo ciclo de 120 días?')) return;
+      state.history.push({ inicio: state.profile.inicio, fin: addDays(state.profile.inicio, CYCLE_DAYS), progresoFinal: overallProgress() });
+      state.logs = {};
+      state.profile.inicio = todayISO();
+      saveState();
+      renderPerfil();
+      goDashboard();
+    });
 
-  <!-- Registrar Service Worker (PWA + Offline) -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js").catch(console.error);
-      });
+    document.getElementById('btnReset').addEventListener('click', () => {
+      if (!confirm('Esto borrará todos tus datos. ¿Continuar?')) return;
+      state = emptyState();
+      saveState();
+      document.getElementById('navbar').style.display = 'none';
+      document.getElementById('topDayBadge').style.display = 'none';
+      renderContrato();
+      showScreen('screen-contrato');
+    });
+
+    // Inicio
+    loadState();
+    if (state.profile && state.profile.firmado) {
+      document.getElementById('navbar').style.display = 'flex';
+      document.getElementById('topDayBadge').style.display = 'block';
+      renderMetas();
+      goDashboard();
+      renderPerfil();
+    } else {
+      renderContrato();
+      showScreen('screen-contrato');
     }
   </script>
 </body>
 </html>
+
