@@ -276,7 +276,7 @@
         <input type="text" id="c_profesion" placeholder="Ej. Emprendedor, barista...">
 
         <label>Teléfono</label>
-        <input type="tel" id="c_telefono" placeholder="561-524-8762" maxlength="12" class="mono">
+        <input type="tel" id="c_telefono" placeholder="xxx-xxx-xxxx" maxlength="12" class="mono">
 
         <label>Correo Electrónico</label>
         <input type="email" id="c_correo" placeholder="ejemplo@correo.com">
@@ -354,8 +354,8 @@
     <div class="screen" id="screen-perfil">
       <div class="section-title" style="margin-top:6px;"><h2>Perfil & Contrato</h2></div>
       <div class="card">
-        <div class="muted">Nombre completo</div>
-        <div style="font-weight:700; margin-bottom:10px; font-size:15px;" id="pf_nombre">–</div>
+        <div class="muted">Nombre Completo</div>
+        <div style="font-weight:700; margin-bottom:10px; font-size:16px;" id="pf_nombre">–</div>
         <div class="muted">Profesión</div>
         <div style="font-weight:700; margin-bottom:10px; font-size:15px;" id="pf_profesion">–</div>
         <div class="muted">Teléfono</div>
@@ -431,7 +431,7 @@
       });
     }
 
-    /* Formato automático de Teléfono (XXX-XXX-XXXX) */
+    /* Formateador del Teléfono (xxx-xxx-xxxx) */
     const telInput = document.getElementById('c_telefono');
     telInput.addEventListener('input', (e) => {
       let digits = e.target.value.replace(/\D/g, '').slice(0, 10);
@@ -564,7 +564,7 @@
       
       if (!nombre) return alert('Por favor escribe tu nombre.');
       if (telefono && telefono.replace(/\D/g, '').length !== 10) {
-        return alert('El número de teléfono debe tener exactamente 10 dígitos (Ej: 561-524-8762).');
+        return alert('El número de teléfono debe tener exactamente 10 dígitos (Ej: xxx-xxx-xxxx).');
       }
       if (!firma) return alert('Debes marcar la casilla para confirmar tu compromiso.');
       
@@ -579,6 +579,7 @@
         firmado: true
       };
       saveState();
+      renderPerfil();
       document.getElementById('mainTopBar').style.display = 'flex';
       document.getElementById('navbar').style.display = 'flex';
       showScreen('screen-metas');
@@ -825,7 +826,10 @@
 
     function renderPerfil() {
       if (!state.profile) return;
-      document.getElementById('pf_nombre').textContent = state.profile.nombreCompleto || state.profile.nombre;
+      const nombreMostrar = state.profile.nombreCompleto || 
+                           (state.profile.apellido ? `${state.profile.nombre} ${state.profile.apellido}` : state.profile.nombre);
+      
+      document.getElementById('pf_nombre').textContent = nombreMostrar;
       document.getElementById('pf_profesion').textContent = state.profile.profesion || 'No especificado';
       document.getElementById('pf_telefono').textContent = state.profile.telefono || 'No especificado';
       document.getElementById('pf_correo').textContent = state.profile.correo || 'No especificado';
