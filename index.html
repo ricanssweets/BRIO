@@ -50,22 +50,25 @@
     }
 
     .mono { font-family: 'JetBrains Mono', monospace; }
-    .app { max-width: 500px; margin: 0 auto; min-height: 100vh; position: relative; padding: 0 16px; }
+    .app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; padding: 0 16px; }
 
-    /* ---- Top Bar & Header Visual ---- */
+    /* ---- Top Bar Limpia ---- */
     .topbar {
       display: flex; align-items: center; justify-content: space-between;
       padding: 16px 4px 12px;
     }
-    .brand-full-container {
+    .brand-mini {
       display: flex; align-items: center; gap: 10px;
     }
-    .brand-full-img {
-      height: 48px;
-      width: auto;
-      object-fit: contain;
-      border-radius: 8px;
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+    .brand-mini-img {
+      width: 36px; height: 36px; border-radius: 10px;
+      object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .brand-mini-title {
+      font-weight: 900; font-size: 18px; letter-spacing: 0.05em; color: #fff; line-height: 1;
+    }
+    .brand-mini-sub {
+      font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px;
     }
     
     .daybadge {
@@ -74,17 +77,16 @@
       padding: 6px 12px; border-radius: 20px; color: var(--brio-green);
     }
 
-    /* ---- Banner Hero para Pantallas Principales ---- */
+    /* ---- Banner Portada Elegante ---- */
     .hero-banner-wrap {
       text-align: center;
-      padding: 16px 0 10px;
+      padding: 8px 0 16px;
     }
     .hero-banner-img {
-      width: 100%;
-      max-width: 280px;
+      width: 170px;
       height: auto;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      border-radius: 22px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.45);
       margin: 0 auto;
       display: block;
     }
@@ -203,10 +205,10 @@
     /* ---- Navbar ---- */
     .navbar {
       position: fixed; bottom: 0; left: 0; right: 0;
-      background: rgba(11, 18, 15, 0.9); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      background: rgba(11, 18, 15, 0.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
       border-top: 1px solid var(--border); display: flex; z-index: 50; padding-bottom: env(safe-area-inset-bottom);
     }
-    .navbar-inner { max-width: 500px; margin: 0 auto; display: flex; width: 100%; }
+    .navbar-inner { max-width: 480px; margin: 0 auto; display: flex; width: 100%; }
     .navbtn {
       flex: 1; background: none; border: none; padding: 12px 0 10px; display: flex; flex-direction: column;
       align-items: center; gap: 4px; cursor: pointer; color: var(--text-muted); font-family: inherit;
@@ -215,11 +217,11 @@
     .navbtn svg { width: 22px; height: 22px; }
     .navbtn span { font-size: 11px; font-weight: 700; }
 
-    /* ---- Modals ---- */
+    /* ---- Modales ---- */
     .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; display: none; align-items: flex-end; justify-content: center; backdrop-filter: blur(4px); }
     .overlay.active { display: flex; }
     .modal {
-      background: var(--bg-surface); width: 100%; max-width: 500px; border-radius: 24px 24px 0 0;
+      background: var(--bg-surface); width: 100%; max-width: 480px; border-radius: 24px 24px 0 0;
       border: 1px solid var(--border); border-bottom: none; padding: 22px 20px 30px; max-height: 88vh; overflow-y: auto;
       animation: slideUp .2s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -238,22 +240,26 @@
 </head>
 <body>
   <div class="app" id="app">
-    <!-- Header con tu diseño completo -->
+    <!-- Topbar limpia y fija -->
     <div class="topbar">
-      <div class="brand-full-container">
-        <img src="logo-full.png" alt="B.R.I.O." class="brand-full-img">
+      <div class="brand-mini">
+        <img src="logo.png" alt="BRIO" class="brand-mini-img">
+        <div>
+          <div class="brand-mini-title">B.R.I.O.</div>
+          <div class="brand-mini-sub">Ideas y Objetivos</div>
+        </div>
       </div>
       <div class="daybadge" id="topDayBadge" style="display:none;"></div>
     </div>
 
-    <!-- CONTRATO -->
+    <!-- CONTRATO (Pantalla de Bienvenida) -->
     <div class="screen" id="screen-contrato">
       <div class="hero-banner-wrap">
         <img src="logo-full.png" alt="B.R.I.O. Emblema" class="hero-banner-img">
       </div>
-      <div class="card" style="margin-top: 12px;">
+      <div class="card">
         <h2 style="font-size: 19px; margin-bottom: 6px; font-weight: 800;">Contrato BRIO</h2>
-        <p class="muted">Ciclo de 120 días. Define tu compromiso: enfoca, planifica, actúa y transforma.</p>
+        <p class="muted">Ciclo de 120 días. Define tu compromiso personal: enfoca, planifica, actúa y transforma.</p>
         <label>Nombre</label>
         <input type="text" id="c_nombre" placeholder="Tu nombre">
         <label>Profesión</label>
