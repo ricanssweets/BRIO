@@ -1,9 +1,9 @@
-const CACHE_NAME = 'brio-app-v2';
+const CACHE_NAME = 'brio-app-v3';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './logo.svg'
+  './logo.png'
 ];
 
 self.addEventListener('install', event => {
