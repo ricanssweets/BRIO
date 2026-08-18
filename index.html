@@ -7,13 +7,13 @@
 
   <!-- PWA Meta Tags & Manifest -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0d1512">
+  <meta name="theme-color" content="#0b120f">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="BRIO">
   
-  <link rel="icon" type="image/svg+xml" href="logo.svg">
-  <link rel="apple-touch-icon" href="logo.svg">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
 
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +33,6 @@
       --brio-green: #22c55e;
       --brio-green-dark: #15803d;
       --brio-green-glow: rgba(34, 197, 94, 0.2);
-      --brio-navy: #111a16;
       
       --amber: #f59e0b;
       --danger: #ef4444;
@@ -59,12 +58,11 @@
       padding: 18px 4px 14px;
     }
     .brand { display: flex; align-items: center; gap: 12px; }
-    .brand-logo-wrap {
+    .brand-logo-img {
       width: 44px; height: 44px; border-radius: 12px;
-      background: #ffffff; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.35); flex-shrink: 0; padding: 2px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.35); flex-shrink: 0;
+      object-fit: cover;
     }
-    .brand-logo-wrap svg { width: 100%; height: 100%; }
     .brand-title { font-weight: 900; font-size: 20px; letter-spacing: 0.08em; color: #ffffff; line-height: 1.1; }
     .brand-sub { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-top: 2px; }
     
@@ -223,38 +221,10 @@
 </head>
 <body>
   <div class="app" id="app">
-    <!-- Header con el Logo Vectorial Exacto -->
+    <!-- Header con tu logo original en imagen -->
     <div class="topbar">
       <div class="brand">
-        <div class="brand-logo-wrap">
-          <svg viewBox="0 0 100 100">
-            <defs>
-              <linearGradient id="gGreen" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#0b5e28" />
-                <stop offset="60%" stop-color="#1db954" />
-                <stop offset="100%" stop-color="#2ed86e" />
-              </linearGradient>
-              <linearGradient id="gCircle" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#111815" />
-                <stop offset="50%" stop-color="#1b2822" />
-                <stop offset="100%" stop-color="#0b5e28" />
-              </linearGradient>
-            </defs>
-            <!-- Círculo exterior -->
-            <path d="M 48 10 A 38 38 0 1 0 50 86" fill="none" stroke="url(#gCircle)" stroke-width="7" stroke-linecap="round"/>
-            <path d="M 48 10 A 38 38 0 0 1 76 22" fill="none" stroke="#12833d" stroke-width="6.5" stroke-linecap="round"/>
-            <!-- Letra B -->
-            <text x="24" y="67" font-family="'Plus Jakarta Sans', Arial Black, sans-serif" font-size="52" font-weight="900" fill="#141a18">B</text>
-            <!-- Flecha Curva Ascendente -->
-            <path d="M 33 75 Q 60 70 78 38" fill="none" stroke="url(#gGreen)" stroke-width="5" stroke-linecap="round"/>
-            <polygon points="73,34 88,30 83,45" fill="#1db954" />
-            <!-- 4 Barras de Crecimiento -->
-            <rect x="49" y="73" width="6" height="11" rx="1.5" fill="#0f6b30"/>
-            <rect x="58" y="67" width="6" height="17" rx="1.5" fill="#14833c"/>
-            <rect x="67" y="60" width="6" height="24" rx="1.5" fill="#1ba44c"/>
-            <rect x="76" y="52" width="6" height="32" rx="1.5" fill="#24c45a"/>
-          </svg>
-        </div>
+        <img src="logo.png" alt="B.R.I.O. Logo" class="brand-logo-img">
         <div>
           <div class="brand-title">B.R.I.O.</div>
           <div class="brand-sub">Base Racional de Ideas y Objetivos</div>
@@ -345,7 +315,7 @@
       <div id="pd_goalList" style="margin-top:14px;"></div>
       <button class="btn btn-ghost" id="pd_addBtn" style="margin-top:8px;">+ Agregar objetivo</button>
       <div id="pd_suggestBox" style="margin-top:22px;">
-        <label style="margin-top:0;">Sugerencias sugeridas</label>
+        <label style="margin-top:0;">Sugerencias rápidas</label>
         <div class="chips" id="pd_chips"></div>
       </div>
     </div>
@@ -421,7 +391,6 @@
   </div>
 
   <script>
-    /* PWA Service Worker Registration */
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW no registrado:', err));
@@ -836,7 +805,6 @@
       showScreen('screen-contrato');
     });
 
-    // Inicio
     loadState();
     if (state.profile && state.profile.firmado) {
       document.getElementById('navbar').style.display = 'flex';
