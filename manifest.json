@@ -1,17 +1,22 @@
 {
+  "id": "/BRIO/",
   "name": "B.R.I.O. — Base Racional de Ideas y Objetivos",
   "short_name": "BRIO",
-  "start_url": "./index.html",
+  "description": "Ciclo de 120 días en 7 áreas: fija de 3 a 5 metas medibles por columna y registra tu avance día a día.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0b120f",
   "theme_color": "#0b120f",
-  "orientation": "portrait",
+  "categories": ["lifestyle", "productivity"],
   "icons": [
     {
       "src": "./logo.png",
-      "sizes": "512x512",
+      "sizes": "1254x1254",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }

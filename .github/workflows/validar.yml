@@ -1,0 +1,42 @@
+name: Validar B.R.I.O.
+
+# Comprueba en cada push que el HTML sigue siendo válido, que el manifest
+# y las rutas son correctas y que la CSP estricta no se ha roto.
+# No publica nada: GitHub Pages despliega por su cuenta.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    name: HTML, manifest y service worker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Comprobar la sintaxis de los scripts
+        run: |
+          node --check app.js
+          node --check sw.js
+
+      - name: Comprobar manifest, referencias, CSP y service worker
+        run: node .github/scripts/checks.js
+
+      - name: Validar el HTML con el validador del W3C
+        run: |
+          codigo=$(curl -s -o "$RUNNER_TEMP/nu.json" -w '%{http_code}' \
+            -H 'Content-Type: text/html; charset=utf-8' \
+            --data-binary @index.html \
+            'https://validator.w3.org/nu/?out=json')
+          if [ "$codigo" != "200" ]; then
+            echo "::warning::El validador del W3C no respondió (HTTP $codigo); se omite esta comprobación."
+            exit 0
+          fi
+          node -e 'const r=require(process.argv[1]);const e=r.messages.filter(m=>m.type==="error");r.messages.filter(m=>m.type!=="error").forEach(m=>console.log("aviso línea "+(m.lastLine||"?")+": "+m.message));if(e.length){e.forEach(m=>console.error("ERROR línea "+(m.lastLine||"?")+": "+m.message));process.exit(1);}console.log("HTML válido según el W3C: 0 errores");' "$RUNNER_TEMP/nu.json"

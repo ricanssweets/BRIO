@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ricanssweets.github.io/BRIO/sitemap.xml
