@@ -24,7 +24,7 @@
        sin 'unsafe-inline' ni 'unsafe-eval'. style-src sí necesita 'unsafe-inline' porque los
        estilos van en línea; si algún día se mueven a styles.css, quítalo también.
        No se puede usar frame-ancestors desde meta (requiere cabecera). -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 
   <!-- PWA Meta Tags & Manifest -->
   <link rel="manifest" href="manifest.json">
@@ -35,14 +35,13 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="BRIO">
 
-  <link rel="icon" type="image/png" href="logo.png">
-  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
 
-  <!-- Fuentes: 5 pesos en vez de 8. Los pesos 500/600/900 se remapearon a 400/700/800
-       en el CSS para recortar bytes de fuente sin cambiar el diseño. -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Tipografía del sistema: cero peticiones a terceros, ningún dato a Google y
+       funciona sin conexión. Para volver a Plus Jakarta Sans auto-hospedada, ver
+       LEEME-CAMBIOS.md: son dos variables CSS y los @font-face. -->
 
   <style>
     :root {
@@ -62,19 +61,24 @@
       --amber: #f59e0b;
       --danger: #ef4444;
       --radius: 18px;
+
+      /* Tipografía del sistema operativo. --font-sans y --font-mono son los dos
+         únicos puntos que hay que tocar para volver a una fuente propia. */
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "Cascadia Mono", "Segoe UI Mono", Menlo, Consolas, "Liberation Mono", monospace;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body {
       background: var(--bg);
       color: var(--text-main);
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: var(--font-sans);
       min-height: 100vh;
       padding-bottom: 96px;
       -webkit-font-smoothing: antialiased;
     }
 
-    .mono { font-family: 'JetBrains Mono', monospace; }
+    .mono { font-family: var(--font-mono); }
     .app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; padding: 0 16px; }
 
     /* ---- Top Bar ---- */
@@ -97,7 +101,7 @@
     }
     
     .daybadge {
-      font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 11.5px;
+      font-family: var(--font-mono); font-weight: 700; font-size: 11.5px;
       background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.3);
       padding: 6px 12px; border-radius: 20px; color: var(--brio-green);
     }
@@ -299,7 +303,7 @@
     <!-- Topbar (Se activa en el panel) -->
     <div class="topbar" id="mainTopBar" style="display:none;">
       <div class="brand-mini">
-        <img src="logo.png" alt="B.R.I.O." class="brand-mini-img" width="38" height="38" decoding="async">
+        <img src="icon-192.png" alt="B.R.I.O." class="brand-mini-img" width="38" height="38" decoding="async">
         <div>
           <div class="brand-mini-title">B.R.I.O.</div>
           <div class="brand-mini-sub">Ideas y Objetivos</div>
@@ -311,7 +315,10 @@
     <!-- CONTRATO -->
     <div class="screen" id="screen-contrato">
       <div class="hero-banner-wrap">
-        <img src="logo-full.png" alt="Logotipo de B.R.I.O." class="hero-banner-img" width="220" height="220" fetchpriority="high" decoding="async">
+        <picture>
+          <source srcset="hero-440.webp" type="image/webp">
+          <img src="hero-440.png" alt="Logotipo de B.R.I.O." class="hero-banner-img" width="220" height="220" fetchpriority="high" decoding="async">
+        </picture>
       </div>
       <div class="card">
         <h1 tabindex="-1" style="font-size: 19px; margin-bottom: 6px; font-weight: 800;">Contrato BRIO</h1>

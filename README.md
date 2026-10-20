@@ -3,7 +3,7 @@
 App web instalable (PWA) para trabajar un **ciclo de 120 días** en **7 áreas** (Espiritual, Personal, Familia, Profesional, Financiera, Comunidad y Placer), con metas medibles y registro diario. Funciona **por completo en el dispositivo**: no hay servidor, no hay cuenta y ningún dato sale del navegador.
 
 - **Demo:** https://ricanssweets.github.io/BRIO/
-- **Sin build, sin dependencias:** HTML, CSS, un script y dos imágenes. Se despliega empujando a `main`.
+- **Sin build, sin dependencias y sin peticiones a terceros.** Se despliega empujando a `main`.
 
 ## Cómo funciona
 
@@ -19,17 +19,25 @@ El día de inicio cuenta como **Día 1** y el ciclo termina 119 días después: 
 
 | Archivo | Para qué |
 |---|---|
-| `index.html` | Marcado y estilos (~30 KB) |
+| `index.html` | Marcado y estilos (~31 KB) |
 | `app.js` | Toda la lógica de la app (~45 KB) |
 | `sw.js` | Service Worker: navegación *network-first* y precaché del shell |
 | `manifest.json` | Metadatos PWA (nombre, colores, iconos) |
-| `logo.png` | Icono de app, favicon y avatar de la barra superior |
-| `logo-full.png` | Imagen del héroe en la pantalla de contrato |
+| `icon-192.png`, `icon-512.png`, `icon-512.webp` | Iconos de la app |
+| `icon-512-maskable.*` | Icono adaptativo de Android (logo al 72 %, zona segura del 80 %) |
+| `icon-180.png`, `favicon.ico` | Icono de iOS y pestaña del navegador |
+| `hero-440.webp`, `hero-440.png` | Imagen del contrato (WebP con respaldo PNG) |
+| `logo.png`, `logo-full.png` | Originales sin tocar; ya no se cargan en la app |
 | `robots.txt`, `sitemap.xml` | Indexación |
-| `.github/` | CI: valida HTML, manifest, rutas y CSP en cada push |
+| `LICENSE` | MIT |
+| `.github/` | CI: valida HTML, manifest, rutas, iconos y CSP en cada push |
 
 El script va en un archivo aparte a propósito: permite una **Content-Security-Policy estricta** (`script-src 'self'`,
 sin `unsafe-inline`) y que el navegador lo cachee por separado.
+
+La tipografía es la **del sistema operativo**: cero peticiones a Google, ningún dato enviado a terceros y funciona sin
+conexión. Para volver a una fuente propia hay dos variables CSS preparadas (`--font-sans`, `--font-mono`); el
+procedimiento está en `LEEME-CAMBIOS.md`.
 
 ## Correr en local
 
@@ -50,7 +58,7 @@ node .github/scripts/checks.js
 
 ## Privacidad y datos
 
-- Todo se guarda en `localStorage` (`brio_app_state_v1`), **en claro y solo en ese dispositivo**. No hay backend ni analítica.
+- Todo se guarda en `localStorage` (`brio_app_state_v1`), **en claro y solo en ese dispositivo**. No hay backend, no hay analítica y no se hace **ninguna** petición a terceros.
 - Aviso importante: `ricanssweets.github.io` es un **origen compartido**. Cualquier otra web publicada bajo esa misma cuenta comparte el mismo almacenamiento, así que conviene no reutilizar ese origen para proyectos con datos sensibles.
 - Exporta un respaldo (Perfil → Zona de Datos) antes de cambiar de teléfono o de navegador: los navegadores pueden borrar el almacenamiento de sitios poco visitados.
 - Si el navegador no puede guardar (cuota llena, navegación privada), la app lo avisa en pantalla.
@@ -63,8 +71,8 @@ Zoom permitido, foco visible en todos los controles, navegación por teclado en 
 
 Copia los archivos a la raíz del repositorio y empuja a `main`. GitHub Pages publica ese contenido en https://ricanssweets.github.io/BRIO/.
 
-Al publicar cambios **no hace falta tocar `sw.js`**: la navegación es *network-first*, así que la versión nueva llega sola (ver `LEEME-CAMBIOS.md`).
+Al publicar cambios **no hace falta tocar `sw.js`**: la navegación es *network-first*, así que la versión nueva llega sola.
 
 ## Licencia
 
-Sin `LICENSE` en este repositorio, el código queda con **todos los derechos reservados**, aunque sea público. Si quieres permitir su reutilización, añade una licencia (MIT y Apache-2.0 son las habituales para proyectos así).
+MIT — ver [`LICENSE`](LICENSE). Puedes usar, modificar y redistribuir el código citando el aviso de copyright.
